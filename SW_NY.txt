@@ -1,0 +1,52 @@
+  Vlans
+
+	Switch(config)#vlan 10
+	Switch(config-vlan)#name Data
+	Switch(config-vlan)#int vlan 10
+	Switch(config-if)#no shut
+
+	Switch(config-if)#vlan 20
+	Switch(config-vlan)#name Wireless
+	Switch(config-vlan)#int vlan 20
+	Switch(config-if)#no shut
+
+	Switch(config-if)#vlan 100
+	Switch(config-vlan)#name Management
+	Switch(config-vlan)#int vlan 100
+	Switch(config-if)#no shut
+	Switch(config-if)#ip address 10.0.7.2 255.255.255.248 
+	
+	Switch(config-if)#vlan 200
+	Switch(config-vlan)#name Server
+	Switch(config-vlan)#int vlan 200
+	Switch(config-if)#no shut
+
+	Switch(config)#vlan 99
+	Switch(config-vlan)#name Native
+	Switch(config-vlan)#int vlan 99
+	Switch(config-if)#no shut
+
+  SSH Setup
+
+	Switch(config)#host Sw_NY
+	Sw_NY(config)#ip domain-name SafeUS
+	Sw_NY(config)#crypto key generate rsa general-keys modulus 1024
+	Sw_NY(config)#line vty 0 15
+	Sw_NY(config-line)#transport input ssh	
+	Sw_NY(config)#ip ssh version 2
+	Sw_NY(config)#username cisco secret cisco
+
+  Switchport interfaces
+
+	Sw_NY(config-if)#int g0/1
+	Sw_NY(config-if)#switchport mode trunk
+	Sw_NY(config-if)#switchport trunk allowed vlan 10,20,100,200,99
+	Sw_NY(config-if)#switchport trunk native vlan 99
+
+	Sw_NY(config-if)#int g0/2
+	Sw_NY(config-if)#switchport mode access
+	Sw_NY(config-if)#switchport access vlan 100
+
+	Sw_NY(config-if)#int f0/2
+	Sw_NY(config-if)#switchport mode access
+	Sw_NY(config-if)#switchport access vlan 10
