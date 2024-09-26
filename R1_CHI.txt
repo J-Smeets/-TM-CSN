@@ -1,0 +1,52 @@
+  SSH setup
+
+	Router(config)#hostname R1_CHI
+	R1_CHI(config)#no ip domain lookup
+	R1_CHI(config)#ip domain-name SafeUS
+	
+	R1_CHI(config)#line con 0
+	R1_CHI(config-line)#password cisco
+	R1_CHI(config-line)#login
+	R1_CHI(config)#crypto key generate rsa general-keys modulus 1024
+	R1_CHI(config)#line vty 0 15
+	R1_CHI(config-line)#transport input ssh	
+	R1_CHI(config)#ip ssh version 2
+	R1_CHI(config)#username cisco secret cisco
+
+  Interfaces
+
+	R1_CHI(config)#int serial 0/1/0
+	R1_CHI(config-if)#ip address 10.1.0.14 255.255.255.252
+	R1_CHI(config-if)#no shut
+
+	R1_CHI(config)#int G0/0/0
+	R1_CHI(config-if)#no shut
+
+	R1_CHI(config)#int G0/0/0.10
+	R1_CHI(config-subif)#encapsulation dot1Q 10
+	R1_CHI(config-subif)#ip address 10.0.8.1 255.255.255.192
+	R1_CHI(config)#int G0/0/0
+	R1_CHI(config-if)#no shut
+	
+	R1_CHI(config)#int G0/0/0.20
+	R1_CHI(config-subif)#encapsulation dot1Q 20
+	R1_CHI(config-subif)#ip address 10.0.8.65 255.255.255.192
+
+	R1_CHI(config)#int G0/0/0.99
+	R1_CHI(config-subif)#encapsulation dot1Q 99 native
+
+	R1_CHI(config)#int G0/0/0.100
+	R1_CHI(config-subif)#encapsulation dot1Q 100
+	R1_CHI(config-subif)#ip address 10.0.8.129 255.255.255.248
+	
+	R1_CHI(config)#int G0/0/0.200
+	R1_CHI(config-subif)#encapsulation dot1Q 200
+	R1_CHI(config-subif)#ip address 10.0.8.137 255.255.255.248
+
+ IP Routes 
+
+	R1_CHI(config)#ip route 10.0.5.0 255.255.255.0 S0/1/0
+	R1_CHI(config)#ip route 10.0.6.0 255.255.255.0 S0/1/0
+	R1_CHI(config)#ip route 10.0.7.0 255.255.255.248 S0/1/0
+	R1_CHI(config)#ip route 10.0.7.8 255.255.255.248 S0/1/0
+
