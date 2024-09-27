@@ -1,0 +1,68 @@
+  Basic config
+
+	hostname S3
+	enable secret class
+	service password-encryption
+
+	line con 0
+	password cisco
+	login
+	exit
+
+  SSH
+  
+	ip domain-name SafeEU
+	crypto key generate rsa general-keys modulus 1024
+	line vty 0 14
+	transport input ssh
+	ip ssh version 2
+	username cisco secret cisco
+ 
+  VLANS
+	vlan 10
+	name Data_vlan
+	int vlan 10
+	no shut
+
+	vlan 20
+	name Wireless_Vlan
+	int vlan 20
+	no shut
+
+	vlan 100
+	name Management_Vlan
+	int vlan 100
+	ip address 10.0.4.5 255.255.255.248
+	no shut
+
+	vlan 200
+	name Server_Vlan
+	int vlan 200
+	no shut
+
+	vlan 99
+	name Native
+	int vlan 99
+	no shut
+
+  Interfaces
+
+	int range g0/1-2
+	switchport mode trunk
+	switchport trunk allowed vlan 10,20,99,100,200
+	switchport trunk native vlan 99
+	no shut
+	
+	int f0/5
+	switchport mode access
+	switchport access vlan 10
+
+  	int range fa0/23-24
+	switchport access vlan 200
+
+  Spanning-tree
+	
+	int range fa0/1-24
+	spanning-tree bpduguard enable
+	spanning-tree portfast
+	no shut
