@@ -1,0 +1,66 @@
+Commando`s S4:
+
+Basis Config:
+Switch(config)#hostname S4
+S4(config)#enable secret class
+S4(config)#service password-encryption
+
+S4(config)#line con 0
+S4(config-line)#password cisco
+S4(config-line)#login
+S4(config-line)#exit
+
+S4(config)#line vty 0 14
+S4(config-line)#password cisco
+S4(config-line)#exit
+
+SSH:
+S4(config)#ip domain-name SafeEU
+S4(config)#crypto key generate rsa general-keys modulus 1024
+The name for the keys will be: S4.SafeEU
+S4(config)#line vty 0 14
+S4(config-line)#transport input ssh
+S4(config-line)#ip ssh version 2
+S4(config)#username cisco secret cisco
+S4(config)#exit
+ 
+VLAN:
+S4(config)#vlan 10
+S4(config-vlan)#name DATA_Vlan
+S4(config-vlan)#vlan 20
+S4(config-vlan)#name Wireless_Vlan
+S4(config-vlan)#vlan 100
+S4(config-vlan)#name MGMT_Vlan
+S4(config-vlan)#vlan 200
+S4(config-vlan)#name Servers_Vlan
+S4(config)#int vlan 100
+S4(config-if)#ip address 10.0.4.4 255.255.255.248
+S4(config-if)#no shut
+
+Porfast/BPDU-Guard:
+S4(config)#int F0/5
+S4(config-if)#spanning-tree bpduguard en
+S4(config-if)#spanning-tree bpduguard enable
+S4(config-if)#spanning-tree portfast
+S4(config-if)#ex
+
+Interfaces:
+S4(config)#int f0/3
+S4(config-if)#switchport mode trunk
+S4(config-if)#switchport trunk allowed vlan 10,20,99,100,200
+S4(config-if)#switchport trunk native vlan 99
+S4(config-if)#no shut
+S4(config-if)#ex
+
+S4(config-if)#int f0/4
+S4(config-if)#switchport mode trunk
+S4(config-if)#switchport trunk allowed vlan 10,20,99,100,200
+S4(config-if)#switchport trunk native vlan 99
+S4(config-if)#no shut
+S4(config-if)#exit
+
+S4(config)#int f0/5
+S4(config-if)#switchport mode access
+S4(config-if)#switchport access vlan 10
+S4(config-if)#no shut
+S4(config-if)#ex
