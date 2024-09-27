@@ -1,52 +1,53 @@
 SSH setup
 
-	Router(config)#hostname R1_NY
-	R1_NY(config)#no ip domain lookup
-	R1_NY(config)#ip domain-name SafeUS
-	R1_NY(config)#line con 0
-	R1_NY(config-line)#password cisco
-	R1_NY(config-line)#login
-	R1_NY(config-line)#exit
-	R1_NY(config)#line vty 0 14
-	R1_NY(config-line)#password cisco
-	R1_NY(config)#crypto key generate rsa general-keys modulus 1024
-	R1_NY(config)#line vty 0 15
-	R1_NY(config-line)#transport input ssh	
-	R1_NY(config)#ip ssh version 2
-	R1_NY(config)#username cisco secret cisco
+	hostname R1_NY
+	no ip domain lookup
+	ip domain-name SafeUS
+	line con 0
+	password cisco
+	login
+	line vty 0 14
+	password cisco
+	crypto key generate rsa general-keys modulus 1024
+	line vty 0 15
+	transport input ssh	
+	ip ssh version 2
+	username cisco secret cisco
 
   Interfaces
 
-	R1_NY(config)#int serial 0/1/0
-	R1_NY(config-if)#ip address 10.1.0.13 255.255.255.252
-	R1_NY(config-if)#no shut
-	R1_NY(config-if)#exit
-	R1_NY(config)#int G0/0/0.10
-	R1_NY(config-subif)#encapsulation dot1Q 10
-	R1_NY(config-subif)#ip address 10.0.5.1 255.255.255.0
-	R1_NY(config-subif)#no shut
-	R1_NY(config-subif)#exit
-	R1_NY(config)#int G0/0/0
-	R1_NY(config-if)#no shut
-	R1_NY(config)#int G0/0/0.20
-	R1_NY(config-subif)#encapsulation dot1Q 20
-	R1_NY(config-subif)#ip address 10.0.6.1 255.255.255.0
-	R1_NY(config-subif)#exit
-	R1_NY(config)#int G0/0/0.100
-	R1_NY(config-subif)#encapsulation dot1Q 100
-	R1_NY(config-subif)#ip address 10.0.7.1 255.255.255.248
-	R1_NY(config-subif)#exit
-	R1_NY(config)#int G0/0/0.200
-	R1_NY(config-subif)#encapsulation dot1Q 200
-	R1_NY(config-subif)#ip address 10.0.7.9 255.255.255.248
-	R1_NY(config)#int G0/0/0.99
-	R1_NY(config-subif)#encapsulation dot1Q 99 native
-	R1_NY(config-subif)#exit
- 
- IP Routes Instellen:
+	int serial 0/1/0
+	ip address 10.1.0.13 255.255.255.252
+	no shut
+	
+	int G0/0/0
+	no shut
 
-	R1_NY(config)#ip route 10.0.8.0 255.255.255.192 S0/1/0
-	R1_NY(config)#ip route 10.0.8.64 255.255.255.192 S0/1/0
-	R1_NY(config)#ip route 10.0.8.128 255.255.255.248 S0/1/0
-	R1_NY(config)#ip route 10.0.8.136 255.255.255.248 S0/1/0
+	int G0/0/0.10
+	encapsulation dot1Q 10
+	ip address 10.0.5.1 255.255.255.0
+	no shut
+	
+	int G0/0/0.20
+	encapsulation dot1Q 20
+	ip address 10.0.6.1 255.255.255.0
+
+	int G0/0/0.99
+	encapsulation dot1Q 99 native
+
+	int G0/0/0.100
+	encapsulation dot1Q 100
+	ip address 10.0.7.1 255.255.255.248
+	
+	int G0/0/0.200
+	encapsulation dot1Q 200
+	ip address 10.0.7.9 255.255.255.248
+	
+ 
+  IP Routes 
+
+	ip route 10.0.8.0 255.255.255.192 S0/1/0
+	ip route 10.0.8.64 255.255.255.192 S0/1/0
+	ip route 10.0.8.128 255.255.255.248 S0/1/0
+	ip route 10.0.8.136 255.255.255.248 S0/1/0
 

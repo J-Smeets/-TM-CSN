@@ -1,56 +1,56 @@
   SSH Setup
 	
-	Switch(config)#hostname S2-CHI
-	S2-CHI(config)#ip domain-name SafeUS
-	S2-CHI(config)#crypto key generate rsa general-keys modulus 1024
-	S2-CHI(config)#line vty 0 15
-	S2-CHI(config-line)#transport input ssh
-	S2-CHI(config)#ip ssh version 2
-	S2-CHI(config)#username cisco secret cisco
+	hostname S2-CHI
+	ip domain-name SafeUS
+	crypto key generate rsa general-keys modulus 1024
+	line vty 0 15
+	transport input ssh
+	ip ssh version 2
+	username cisco secret cisco
 	
   Vlans
 
-	S2-CHI(config)#VLAN 10
-	S2-CHI(config-vlan)#name DATA
+	VLAN 10
+	name DATA
 	
-	S2-CHI(config)#VLAN 20
-	S2-CHI(config-vlan)#name Wireless
+	VLAN 20
+	name Wireless
 	
-	S2-CHI(config)#vlan 100
-	S2-CHI(config-vlan)#name Management
+	vlan 100
+	name Management
 	
-	S2-CHI(config)#Vlan 200
-	S2-CHI(config-vlan)#name SERVERS
+	Vlan 200
+	name SERVERS
 
-	S2-CHI(config)#Vlan 99
-	S2-CHI(config-vlan)#Name Native
+	Vlan 99
+	Name Native
 
   Interfaces
 
-	S2-CHI(config)#int vlan 10
-	S2-CHI(config-if)#no shut
+	int vlan 10
+	no shut
 
-	S2-CHI(config)#int vlan 20
-	S2-CHI(config-if)#no shut
+	int vlan 20
+	no shut
 	
-	S2-CHI(config)#int vlan 99
-	S2-CHI(config-if)#no shut
+	int vlan 99
+	no shut
 
-	S2-CHI(config)#int vlan 100
-	S2-CHI(config-if)#ip address 10.0.8.130 255.255.255.248
-	S2-CHI(config-if)#no shut
+	int vlan 100
+	ip address 10.0.8.130 255.255.255.248
+	no shut
 
-	S2-CHI(config)#int vlan 200
-	S2-CHI(config-if)#no shut
+	int vlan 200
+	no shut
 
-	S2-CHI(config)#int fa0/1
-	S2-CHI(config-if)#switchport mode access
-	S2-CHI(config-if)#switchport access vlan 10
-	S2-CHI(config-if)#no shut
+	int fa0/1
+	switchport mode access
+	switchport access vlan 10
+	no shut
 	
-	S2-CHI(config)#int GigabitEthernet 0/1
-	S2-CHI(config-if)#switchport mode trunk
-	S2-CHI(config-if)#switchport trunk allowed vlan 10,20,99,100,200
-	S2-CHI(config-if)#switchport trunk native vlan 99
-	S2-CHI(config-if)#no shut
+	int GigabitEthernet 0/1
+	switchport mode trunk
+	switchport trunk allowed vlan 10,20,99,100,200
+	switchport trunk native vlan 99
+	no shut
 
